@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>朱鸿飞 · 视频作品集</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:      #4db050;
+      --accent-glow: rgba(77,176,80,0.48);
+      --accent-soft: rgba(77,176,80,0.12);
+      --bg:          #0f0f0f;
+      --surface:     #181818;
+      --text-1:      #F5F0E8;
+      --text-2:      #A89F8C;
+      --text-3:      #5a5348;
+      --divider:     rgba(255,255,255,0.07);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'PingFang SC', 'Noto Serif SC', 'Hiragino Sans GB', serif;
+      overflow: hidden;
+    }
+
+    /* smooth color transitions */
+    .title em, .label-top::before, .role-dot, .role-text strong,
+    .cord-btn, .cord-btn svg, .cord-line, .cat-num,
+    .cat-btn, .cat-header::before, .cat-back, .cat-arrow,
+    .wf-cat-label, .wf-cat-label::before, .hint-text,
+    .work-section-title::before {
+      transition: color 1.5s ease, border-color 1.5s ease, background 1.5s ease, stroke 1.5s ease, box-shadow 1.5s ease;
+    }
+
+    /* ═══════════════════════════════
+       SCENE
+    ═══════════════════════════════ */
+    .scene {
+      display: flex;
+      width: 100vw;
+      height: calc(100vh - 56px);
+    }
+
+    /* ───────────────────────────────
+       LEFT PANEL — lamp stays forever
+    ─────────────────────────────── */
+    .left {
+      width: 32vw;
+      min-width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-right: 1px solid var(--divider);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .left::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+    }
+
+    /* ── lamp ── */
+    .lamp-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @keyframes swing {
+      0%   { transform: rotate(-6deg); }
+      50%  { transform: rotate(6deg); }
+      100% { transform: rotate(-6deg); }
+    }
+    .lamp-svg {
+      transform-origin: 80px 0;
+      animation: swing 3.6s ease-in-out infinite;
+      filter: drop-shadow(0 10px 28px var(--accent-glow));
+      transition: filter 1.5s ease;
+    }
+
+    /* ── expression bubble ── */
+    .lamp-bubble {
+      position: absolute;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: var(--surface);
+      border: 1px solid var(--divider);
+      border-radius: 10px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.75rem;
+      color: var(--text-2);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 10;
+    }
+    .lamp-bubble.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .lamp-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 8px; height: 8px;
+      background: var(--surface);
+      border-right: 1px solid var(--divider);
+      border-bottom: 1px solid var(--divider);
+    }
+
+    /* ── cord & button ── */
+    .cord-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1.2rem;
+      position: relative;
+      z-index: 5;
+    }
+    .cord-line {
+      width: 1.5px; height: 24px;
+      background: linear-gradient(to bottom, rgba(107,99,87,0.3), var(--accent));
+    }
+    .cord-btn {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 1.5px solid var(--accent);
+      background: transparent;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.1s;
+    }
+    .cord-btn:hover { background: var(--accent-soft); box-shadow: 0 0 16px var(--accent-glow); }
+    .cord-btn:active { transform: scale(0.88) translateY(2px); }
+    .cord-btn svg {
+      width: 13px; height: 13px;
+      stroke: var(--accent); fill: none;
+      stroke-width: 2; stroke-linecap: round;
+      transition: transform 0.4s ease;
+    }
+    .cord-btn.pull1 svg { transform: rotate(180deg); }
+    .cord-btn.pull2 svg { transform: rotate(360deg); }
+    .hint-text {
+      margin-top: 0.6rem;
+      font-size: 0.55rem; letter-spacing: 0.22em;
+      color: var(--text-3); font-family: 'Helvetica Neue', sans-serif;
+      transition: opacity 0.3s;
+      min-height: 1.2em;
+    }
+
+    .left-badge {
+      position: absolute;
+      bottom: 1.5rem; left: 1.5rem;
+      font-size: 0.55rem; letter-spacing: 0.28em;
+      color: var(--text-3); font-family: 'Helvetica Neue', monospace;
+    }
+
+    /* ───────────────────────────────
+       RIGHT PANEL — all content here
+    ─────────────────────────────── */
+    .right {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── shared view styles ── */
+    .r-view {
+      position: absolute; inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0 5vw;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      transform: translateY(16px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .r-view.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .r-view.exit-up {
+      opacity: 0;
+      transform: translateY(-16px);
+    }
+
+    /* ── State 0: intro ── */
+    .intro-view {
+      justify-content: center;
+    }
+    .label-top {
+      font-size: clamp(0.55rem, 0.75vw, 0.7rem);
+      letter-spacing: 0.38em; color: var(--text-3);
+      text-transform: uppercase; margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 0.75rem;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+    .label-top::before {
+      content: ''; width: 22px; height: 1px; background: var(--accent); flex-shrink: 0;
+    }
+    .title {
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      font-weight: 900; line-height: 0.95;
+      letter-spacing: -0.02em; color: var(--text-1);
+      margin-bottom: 1.2rem;
+    }
+    .title em { color: var(--accent); font-style: normal; }
+    .name-row {
+      display: flex; align-items: baseline;
+      gap: 0.8rem; margin-bottom: 1.6rem;
+      flex-wrap: nowrap;
+    }
+    .name {
+      font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+      font-weight: 700; letter-spacing: 0.18em;
+      white-space: nowrap;
+    }
+    .name-sub {
+      font-size: 0.65rem; letter-spacing: 0.22em;
+      color: var(--text-3); font-family: 'Helvetica Neue', sans-serif;
+      white-space: nowrap;
+    }
+    .role-line {
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .role-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0;
+    }
+    .role-text {
+      font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+      letter-spacing: 0.28em; color: var(--text-2);
+    }
+    .role-text strong { color: var(--accent); font-weight: 600; }
+
+    /* pull hint arrow */
+    .pull-hint {
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: var(--text-3);
+      font-family: 'Helvetica Neue', sans-serif;
+      animation: hintPulse 2s ease-in-out infinite;
+    }
+    .pull-hint svg {
+      width: 16px; height: 16px;
+      stroke: var(--text-3); fill: none;
+      stroke-width: 1.5; stroke-linecap: round;
+      animation: hintArrow 2s ease-in-out infinite;
+    }
+    @keyframes hintPulse {
+      0%,100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+    @keyframes hintArrow {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(3px); }
+    }
+
+    /* ── State 1: work experience ── */
+    .work-view {
+      padding-top: 2.5rem;
+      padding-bottom: 1.5rem;
+    }
+    /* software icon decorations */
+    .work-sketch-icons {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .sketch-icon {
+      position: absolute;
+      opacity: 0.06;
+      transition: opacity 1.5s ease;
+    }
+    .work-view.active .sketch-icon { opacity: 0.08; }
+    .sketch-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 18px var(--accent-glow));
+      transition: stroke 1.5s ease, filter 1.5s ease;
+    }
+    .sketch-icon.si-pr  { top: 8%;  right: 6%;  width: 110px; height: 110px; transform: rotate(12deg); }
+    .sketch-icon.si-ae  { top: 42%; right: 3%;  width: 90px;  height: 90px;  transform: rotate(-8deg); }
+    .sketch-icon.si-ai  { bottom: 12%; left: 2%; width: 100px; height: 100px; transform: rotate(6deg); }
+    .sketch-icon.si-ps  { bottom: 30%; left: 4%; width: 85px;  height: 85px;  transform: rotate(-15deg); }
+    .work-header {
+      font-size: 0.58rem; letter-spacing: 0.38em;
+      color: var(--text-3); font-family: 'Helvetica Neue', sans-serif;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.75rem;
+      text-transform: uppercase;
+    }
+    .work-header::before {
+      content: ''; width: 22px; height: 1px; background: var(--accent);
+    }
+    .work-intro {
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: var(--text-3);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+    .work-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+    .work-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      padding: 0.65rem;
+      border: 1px solid var(--divider);
+      background: var(--surface);
+      border-radius: 4px;
+    }
+    .work-company-name {
+      font-size: 0.65rem;
+      letter-spacing: 0.03em;
+      color: var(--text-1);
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .work-company-meta {
+      font-size: 0.5rem;
+      letter-spacing: 0.08em;
+      color: var(--text-3);
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+    .work-sub-title {
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      color: var(--text-2);
+      margin-top: 0.15rem;
+    }
+    .work-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      margin-top: 0.1rem;
+    }
+    .work-list li {
+      font-size: 0.52rem;
+      letter-spacing: 0.02em;
+      color: var(--text-2);
+      line-height: 1.5;
+      padding-left: 0.6rem;
+      position: relative;
+    }
+    .work-list li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0.5em;
+      width: 2.5px; height: 2.5px;
+      border-radius: 50%;
+      background: var(--text-3);
+    }
+    /* back button */
+    .view-back {
+      margin-top: 1.5rem;
+      position: relative;
+      z-index: 1;
+      padding: 0.55rem 1.2rem;
+      border: 1px solid var(--divider);
+      background: transparent;
+      color: var(--text-3);
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      font-family: 'Helvetica Neue', sans-serif;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      align-self: flex-start;
+    }
+    .view-back:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .view-back svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── State 2: category buttons ── */
+    .cat-view {
+      justify-content: center;
+    }
+    .cat-header {
+      font-size: 0.58rem; letter-spacing: 0.38em;
+      color: var(--text-3); font-family: 'Helvetica Neue', sans-serif;
+      margin-bottom: 1.6rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .cat-header::before {
+      content: ''; width: 22px; height: 1px; background: var(--accent);
+    }
+    .cat-list { display: flex; flex-direction: column; gap: 0.65rem; }
+    .cat-btn {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: transparent; color: var(--text-1);
+      font-family: 'PingFang SC', serif;
+      font-size: 0.82rem; letter-spacing: 0.22em;
+      cursor: pointer; text-decoration: none;
+      position: relative; overflow: hidden;
+      transition: border-color 0.22s, box-shadow 0.22s, letter-spacing 0.22s;
+      opacity: 0;
+    }
+    .cat-btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--accent-soft);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .cat-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
+      letter-spacing: 0.3em;
+    }
+    .cat-btn:hover::before { transform: scaleX(1); }
+    .cat-btn:active { opacity: 0.82; }
+    .cat-btn-left { display: flex; align-items: center; gap: 0.6rem; position: relative; }
+    .cat-num {
+      font-size: 0.52rem; letter-spacing: 0.14em;
+      color: var(--accent); font-family: 'Helvetica Neue', monospace; min-width: 1.4rem;
+    }
+    .cat-arrow {
+      font-size: 0.68rem; color: var(--text-3); position: relative;
+      transition: transform 0.22s, color 0.22s;
+    }
+    .cat-btn:hover .cat-arrow { transform: translateX(5px); color: var(--accent); }
+    /* stagger in */
+    .cat-view.active .cat-btn:nth-child(1) { animation: fadeUp 0.3s 0.04s ease both; }
+    .cat-view.active .cat-btn:nth-child(2) { animation: fadeUp 0.3s 0.09s ease both; }
+    .cat-view.active .cat-btn:nth-child(3) { animation: fadeUp 0.3s 0.14s ease both; }
+    .cat-view.active .cat-btn:nth-child(4) { animation: fadeUp 0.3s 0.19s ease both; }
+    .cat-view.active .cat-btn:nth-child(5) { animation: fadeUp 0.3s 0.24s ease both; }
+
+    /* ── State 3: waterfall ── */
+    .wf-view {
+      padding: 2rem 4vw 1.5rem;
+    }
+    .wf-top {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .wf-cat-label {
+      font-size: 0.55rem; letter-spacing: 0.35em;
+      color: var(--accent); font-family: 'Helvetica Neue', sans-serif;
+      display: flex; align-items: center; gap: 0.5rem;
+      flex: 1;
+    }
+    .wf-cat-label::before {
+      content: ''; width: 18px; height: 1px; background: var(--accent); flex-shrink: 0;
+    }
+    .wf-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+    .wf-card {
+      border: 1px solid var(--divider);
+      background: var(--surface);
+      overflow: hidden;
+      cursor: default;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .wf-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+    .wf-thumb {
+      width: 100%;
+      position: relative;
+      background: #111;
+      overflow: hidden;
+    }
+    .wf-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.75;
+      transition: opacity 0.3s;
+    }
+    .wf-card:hover .wf-thumb video { opacity: 1; }
+    .wf-thumb .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+    .wf-card:hover .play-overlay { opacity: 0; }
+    .wf-card-info { padding: 0.45rem 0.55rem; border-top: 1px solid var(--divider); }
+    .wf-card-title {
+      font-size: 0.6rem; letter-spacing: 0.04em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      color: var(--text-1);
+    }
+    .wf-card-meta {
+      font-size: 0.5rem; color: var(--text-3);
+      letter-spacing: 0.08em; margin-top: 0.15rem;
+      font-family: 'Helvetica Neue', monospace;
+    }
+    .color-xl     { background: linear-gradient(135deg, #1c1408, #2e2008); }
+    .color-news   { background: linear-gradient(135deg, #0d1522, #112235); }
+    .color-health { background: linear-gradient(135deg, #0c1b11, #13261a); }
+    .color-beauty { background: linear-gradient(135deg, #1b0e16, #2c1422); }
+    .color-misc   { background: linear-gradient(135deg, #12121a, #1e1e2c); }
+
+    /* ── video modal ── */
+    .video-modal {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .video-modal.open { opacity: 1; pointer-events: auto; }
+    .video-modal video {
+      max-width: 85vw; max-height: 85vh;
+      border-radius: 4px;
+      box-shadow: 0 0 60px rgba(0,0,0,0.5);
+    }
+    .video-modal-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      background: transparent;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .video-modal-close:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+    /* ═══════════════════════════════
+       CONTACT FOOTER
+    ═══════════════════════════════ */
+    .contact-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 56px;
+      border-top: 1px solid var(--divider);
+      background: rgba(15,15,15,0.96);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      padding: 0 3vw 0 calc(32vw + 3vw);
+      gap: 0;
+      z-index: 50;
+    }
+    .contact-dots {
+      display: flex; gap: 5px;
+      margin-right: 1rem; flex-shrink: 0;
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; }
+    .dot-g { background: #4db050; }
+    .dot-b { background: #2397f2; }
+    .dot-r { background: #e43b37; }
+    .dot-y { background: #ffcb52; }
+    .contact-tag {
+      font-size: 0.55rem; letter-spacing: 0.28em;
+      color: var(--text-3); font-family: 'Helvetica Neue', sans-serif;
+      margin-right: 1rem; text-transform: uppercase; flex-shrink: 0;
+    }
+    .contact-name {
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.15em; color: var(--text-1);
+      margin-right: 1.2rem; flex-shrink: 0;
+    }
+    .contact-phone {
+      font-size: 0.8rem; letter-spacing: 0.1em;
+      color: var(--text-1); font-family: 'Helvetica Neue', sans-serif;
+      margin-right: 1.5rem; flex-shrink: 0;
+    }
+    .contact-small {
+      display: flex; flex-direction: column; gap: 1px;
+    }
+    .contact-small span {
+      font-size: 0.52rem; color: var(--text-3);
+      letter-spacing: 0.1em; font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    /* ═══════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .intro-view .label-top { animation: fadeUp 0.6s 0.1s ease both; }
+    .intro-view .title     { animation: fadeUp 0.6s 0.2s ease both; }
+    .intro-view .name-row  { animation: fadeUp 0.6s 0.32s ease both; }
+    .intro-view .role-line { animation: fadeUp 0.6s 0.44s ease both; }
+    .intro-view .pull-hint { animation: fadeUp 0.6s 0.56s ease both, hintPulse 2s 1.2s ease-in-out infinite; }
+
+    /* scrollbars */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--text-3); border-radius: 2px; }
+
+    /* noise */
+    .noise {
+      position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: 0.02;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+<body>
+<div class="noise"></div>
+
+<div class="scene">
+
+  <!-- ═══ LEFT — lamp, always visible ═══ -->
+  <div class="left">
+    <div class="lamp-wrap" id="lampWrap">
+      <svg class="lamp-svg" id="lampSvg" width="160" height="240" viewBox="0 0 160 240"
+           fill="none" xmlns="http://www.w3.org/2000/svg"
+           stroke-linecap="round" stroke-linejoin="round"
+           style="color: var(--accent);">
+        <!-- cord -->
+        <line x1="80" y1="0" x2="80" y2="50" stroke="#3a3530" stroke-width="1.5" stroke-dasharray="5 3.5"/>
+        <!-- shade -->
+        <path d="M52 108 L30 180 Q80 192 130 180 L108 108 Z"
+              stroke="currentColor" stroke-width="2" fill="url(#shade)"/>
+        <!-- top ring -->
+        <ellipse cx="80" cy="108" rx="28" ry="7"
+                 stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <!-- bottom ring -->
+        <ellipse cx="80" cy="180" rx="50" ry="10"
+                 stroke="currentColor" stroke-width="1.5" fill="url(#ringFill)"/>
+        <!-- sketch lines -->
+        <line x1="62" y1="113" x2="44" y2="177" stroke="currentColor" stroke-width="0.7" opacity="0.3"/>
+        <line x1="80" y1="115" x2="80" y2="179" stroke="currentColor" stroke-width="0.7" opacity="0.3"/>
+        <line x1="98" y1="113" x2="116" y2="177" stroke="currentColor" stroke-width="0.7" opacity="0.3"/>
+        <!-- bulb -->
+        <circle cx="80" cy="107" r="9"
+                stroke="currentColor" stroke-width="1.4" fill="url(#bulbFill)"/>
+        <!-- rays -->
+        <line x1="80" y1="94"   x2="80" y2="86"   stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="92" y1="97"   x2="98" y2="91"   stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="68" y1="97"   x2="62" y2="91"   stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="95" y1="109"  x2="103" y2="109" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="65" y1="109"  x2="57" y2="109"  stroke="currentColor" stroke-width="1" opacity="0.5"/>
+
+        <!-- ★ face group (centered on bulb) ★ -->
+        <g id="lampFace" opacity="0.85">
+          <!-- left eye -->
+          <circle cx="74" cy="104" r="1.8" fill="currentColor" opacity="0.7"/>
+          <!-- right eye -->
+          <circle cx="86" cy="104" r="1.8" fill="currentColor" opacity="0.7"/>
+          <!-- left brow -->
+          <line x1="71" y1="100" x2="77" y2="101" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+          <!-- right brow -->
+          <line x1="83" y1="101" x2="89" y2="100" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+          <!-- mouth -->
+          <path id="lampMouth" d="M76 110 Q80 113 84 110" stroke="currentColor" stroke-width="0.9" fill="none" opacity="0.5"/>
+        </g>
+
+        <!-- pull cord -->
+        <line x1="80" y1="190" x2="80" y2="218" stroke="#3a3530" stroke-width="1.5"/>
+        <circle cx="80" cy="223" r="5" stroke="#6B6357" stroke-width="1.5" fill="url(#ringFill)"/>
+        <!-- cone -->
+        <path d="M30 182 Q80 265 130 182" fill="url(#cone)" opacity="0.13"/>
+        <defs>
+          <linearGradient id="shade" x1="80" y1="108" x2="80" y2="183" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="currentColor" stop-opacity="0.14"/>
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0.04"/>
+          </linearGradient>
+          <radialGradient id="cone" cx="50%" cy="0%" r="65%">
+            <stop offset="0%"   stop-color="currentColor" stop-opacity="0.38"/>
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="ringFill">
+            <stop offset="0%" stop-color="currentColor" stop-opacity="0.06"/>
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0.01"/>
+          </radialGradient>
+          <radialGradient id="bulbFill">
+            <stop offset="0%" stop-color="currentColor" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0.1"/>
+          </radialGradient>
+        </defs>
+      </svg>
+
+      <!-- speech bubble -->
+      <div class="lamp-bubble" id="lampBubble"></div>
+
+      <div class="cord-area">
+        <div class="cord-line"></div>
+        <button class="cord-btn" id="cordBtn" title="拉一下试试">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <span class="hint-text" id="hintText"></span>
+      </div>
+    </div>
+
+    <div class="left-badge">2026 · CHENGDU · EDITOR</div>
+  </div>
+
+  <!-- ═══ RIGHT — content views ═══ -->
+  <div class="right">
+
+    <!-- View 0: intro -->
+    <div class="r-view intro-view active" id="viewIntro">
+      <div class="label-top">VIDEO PORTFOLIO</div>
+      <h1 class="title">视频<em>作品集</em></h1>
+      <div class="name-row">
+        <span class="name">朱鸿飞</span>
+        <span class="name-sub">ZHU HONG FEI</span>
+      </div>
+      <div class="role-line">
+        <div class="role-dot"></div>
+        <span class="role-text">应聘岗位 &ensp;<strong>剪辑</strong></span>
+      </div>
+      <div class="pull-hint">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        <span>拉一下左边的灯</span>
+      </div>
+    </div>
+
+    <!-- View 1: work experience -->
+    <div class="r-view work-view" id="viewWork">
+
+      <!-- decorative software sketches -->
+      <div class="work-sketch-icons">
+        <!-- PR — film strip / scissors -->
+        <div class="sketch-icon si-pr">
+          <svg viewBox="0 0 100 100">
+            <rect x="10" y="20" width="80" height="60" rx="3"/>
+            <line x1="10" y1="35" x2="90" y2="35"/>
+            <line x1="10" y1="65" x2="90" y2="65"/>
+            <rect x="16" y="24" width="12" height="8" rx="1"/>
+            <rect x="34" y="24" width="12" height="8" rx="1"/>
+            <rect x="52" y="24" width="12" height="8" rx="1"/>
+            <rect x="70" y="24" width="12" height="8" rx="1"/>
+            <rect x="16" y="40" width="12" height="8" rx="1"/>
+            <rect x="34" y="40" width="12" height="8" rx="1"/>
+            <rect x="52" y="40" width="12" height="8" rx="1"/>
+            <rect x="70" y="40" width="12" height="8" rx="1"/>
+            <rect x="16" y="56" width="12" height="8" rx="1"/>
+            <rect x="34" y="56" width="12" height="8" rx="1"/>
+            <rect x="52" y="56" width="12" height="8" rx="1"/>
+            <rect x="70" y="56" width="12" height="8" rx="1"/>
+            <text x="50" y="95" text-anchor="middle" font-size="10" fill="currentColor" stroke="none" font-family="Helvetica Neue" font-weight="700">Pr</text>
+          </svg>
+        </div>
+        <!-- AE — composition / layers -->
+        <div class="sketch-icon si-ae">
+          <svg viewBox="0 0 100 100">
+            <polygon points="50,8 92,75 8,75"/>
+            <line x1="50" y1="30" x2="50" y2="60"/>
+            <line x1="35" y1="50" x2="65" y2="50"/>
+            <circle cx="50" cy="55" r="4"/>
+            <text x="50" y="95" text-anchor="middle" font-size="10" fill="currentColor" stroke="none" font-family="Helvetica Neue" font-weight="700">Ae</text>
+          </svg>
+        </div>
+        <!-- AI — pen tool / anchor points -->
+        <div class="sketch-icon si-ai">
+          <svg viewBox="0 0 100 100">
+            <path d="M20 70 Q20 30 50 20 Q80 30 80 70" fill="none"/>
+            <circle cx="20" cy="70" r="3.5" fill="currentColor" stroke="none"/>
+            <circle cx="50" cy="20" r="3.5" fill="currentColor" stroke="none"/>
+            <circle cx="80" cy="70" r="3.5" fill="currentColor" stroke="none"/>
+            <line x1="20" y1="70" x2="30" y2="50" stroke-dasharray="3 2"/>
+            <line x1="80" y1="70" x2="70" y2="50" stroke-dasharray="3 2"/>
+            <line x1="30" y1="50" x2="50" y2="20" stroke-dasharray="3 2"/>
+            <line x1="70" y1="50" x2="50" y2="20" stroke-dasharray="3 2"/>
+            <circle cx="30" cy="50" r="2" fill="currentColor" stroke="none"/>
+            <circle cx="70" cy="50" r="2" fill="currentColor" stroke="none"/>
+            <text x="50" y="95" text-anchor="middle" font-size="10" fill="currentColor" stroke="none" font-family="Helvetica Neue" font-weight="700">Ai</text>
+          </svg>
+        </div>
+        <!-- PS — brush / color wheel -->
+        <div class="sketch-icon si-ps">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="42" r="28"/>
+            <circle cx="50" cy="42" r="20"/>
+            <circle cx="50" cy="42" r="12"/>
+            <circle cx="50" cy="42" r="4" fill="currentColor" stroke="none"/>
+            <line x1="50" y1="14" x2="50" y2="18"/>
+            <line x1="50" y1="66" x2="50" y2="70"/>
+            <line x1="22" y1="42" x2="26" y2="42"/>
+            <line x1="74" y1="42" x2="78" y2="42"/>
+            <path d="M40 78 Q45 72 50 78 Q55 72 60 78" fill="none"/>
+            <text x="50" y="95" text-anchor="middle" font-size="10" fill="currentColor" stroke="none" font-family="Helvetica Neue" font-weight="700">Ps</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="work-header" style="position:relative; z-index:1;">WORK EXPERIENCE</div>
+      <div class="work-intro" id="workIntro" style="position:relative; z-index:1;"></div>
+      <div class="work-grid">
+        <div class="work-item">
+          <div class="work-company-name">四川全时天地网络先锋技术有限公司</div>
+          <div class="work-company-meta">2024.04 — 至今 · 腾讯广告 · 剪辑</div>
+          <div class="work-sub-title">核心职责</div>
+          <ul class="work-list">
+            <li>代运营客户各项目信息流视频剪辑</li>
+            <li>根据消耗数据分析调整视频方向</li>
+            <li>研究使用AI制作信息流片头</li>
+            <li>AI对标同类目文案输出视频文案</li>
+            <li>协助拍摄客户素材整合使用</li>
+            <li>整理项目并分类管理/归档/做表</li>
+          </ul>
+          <div class="work-sub-title" style="margin-top:0.15rem;">工作成果</div>
+          <ul class="work-list">
+            <li>KA赛道单条素材消耗突破40w</li>
+            <li>月消耗稳定15-30w，日均6-10条</li>
+          </ul>
+        </div>
+        <div class="work-item">
+          <div class="work-company-name">上海亦芯文化传媒有限公司</div>
+          <div class="work-company-meta">2023.08 — 2024.01 · 剪辑岗位</div>
+          <div class="work-sub-title">核心职责</div>
+          <ul class="work-list">
+            <li>腾讯/千川等平台代运营信息流视频剪辑</li>
+            <li>对接运营项目并分类管理/归档/做表</li>
+            <li>根据消耗数据分析调整视频方向</li>
+            <li>整理每日素材分配至同事剪辑</li>
+          </ul>
+          <div class="work-sub-title" style="margin-top:0.15rem;">工作成果</div>
+          <ul class="work-list">
+            <li>单条视频曾经消耗超50w</li>
+            <li>素材组单人效率最高日均30条</li>
+          </ul>
+        </div>
+        <div class="work-item">
+          <div class="work-company-name">成都普济中医药研究院</div>
+          <div class="work-company-meta">2021.04 — 2023.08 · 设计</div>
+          <div class="work-sub-title">核心职责</div>
+          <ul class="work-list">
+            <li>医院百度竞价广告物料输出</li>
+            <li>内部手册/宣传单/易拉宝等物料制作</li>
+            <li>推广账号视频拍摄剪辑</li>
+            <li>对接企划完成设计及视频任务</li>
+          </ul>
+          <div class="work-sub-title" style="margin-top:0.15rem;">工作成果</div>
+          <ul class="work-list">
+            <li>熟练掌握PR / PS / AI / AE</li>
+            <li>独立完成小程序+CRM系统UI设计</li>
+          </ul>
+        </div>
+      <button class="view-back" onclick="backToIntro()">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        BACK
+      </button>
+      </div>
+    </div>
+
+    <!-- View 2: categories -->
+    <div class="r-view cat-view" id="viewCat">
+      <div class="cat-header">SELECT · CATEGORY</div>
+      <div class="cat-list">
+        <a class="cat-btn" href="#" onclick="openCat(this,'信息流','xl');    return false;">
+          <span class="cat-btn-left"><span class="cat-num">01</span>信息流</span>
+          <span class="cat-arrow">→</span>
+        </a>
+        <a class="cat-btn" href="#" onclick="openCat(this,'新闻类','news');  return false;">
+          <span class="cat-btn-left"><span class="cat-num">02</span>新闻类</span>
+          <span class="cat-arrow">→</span>
+        </a>
+        <a class="cat-btn" href="#" onclick="openCat(this,'大健康类','health');return false;">
+          <span class="cat-btn-left"><span class="cat-num">03</span>大健康类</span>
+          <span class="cat-arrow">→</span>
+        </a>
+        <a class="cat-btn" href="#" onclick="openCat(this,'美妆类','beauty');return false;">
+          <span class="cat-btn-left"><span class="cat-num">04</span>美妆类</span>
+          <span class="cat-arrow">→</span>
+        </a>
+        <a class="cat-btn" href="#" onclick="openCat(this,'综合类','misc');  return false;">
+          <span class="cat-btn-left"><span class="cat-num">05</span>综合类</span>
+          <span class="cat-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- View 3: waterfall -->
+    <div class="r-view wf-view" id="viewWf">
+      <div class="wf-top">
+        <div class="wf-cat-label" id="wfLabel"></div>
+        <button class="view-back" onclick="backToCat()">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          BACK
+        </button>
+      </div>
+      <div class="wf-cards" id="wfCards"></div>
+    </div>
+
+  </div><!-- /right -->
+</div><!-- /scene -->
+
+<!-- CONTACT FOOTER -->
+<div class="contact-bar">
+  <div class="contact-dots">
+    <div class="dot dot-g"></div>
+    <div class="dot dot-b"></div>
+    <div class="dot dot-r"></div>
+    <div class="dot dot-y"></div>
+  </div>
+  <span class="contact-tag">VIDEO &nbsp;/&nbsp; EDIT</span>
+  <span class="contact-name">朱鸿飞</span>
+  <span class="contact-phone">182 8007 5964</span>
+  <div class="contact-small">
+    <span>邮箱：101028697@qq.com</span>
+    <span>微信与电话同号</span>
+  </div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="video-modal" id="videoModal">
+  <button class="video-modal-close" onclick="closeVideoModal()">&times;</button>
+  <video id="modalVideo" controls></video>
+</div>
+
+<script>
+/* ─────────────────────────────
+   COLOR CYCLE
+───────────────────────────── */
+const palette = [
+  { hex: '#4db050', r: 77,  g: 176, b: 80  },
+  { hex: '#2397f2', r: 35,  g: 151, b: 242 },
+  { hex: '#e43b37', r: 228, g: 59,  b: 55  },
+  { hex: '#ffcb52', r: 255, g: 203, b: 82  },
+];
+let colorIdx = 0;
+const SWING_MS = 3600;
+
+function hexToRgb(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+function cycleColor() {
+  const from = palette[colorIdx];
+  const to = palette[(colorIdx + 1) % palette.length];
+  const f = hexToRgb(from.hex), t = hexToRgb(to.hex);
+  const dur = 1200, start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2, 3)/2;
+    const r = Math.round(f[0]+(t[0]-f[0])*e);
+    const g = Math.round(f[1]+(t[1]-f[1])*e);
+    const b = Math.round(f[2]+(t[2]-f[2])*e);
+    const s = document.documentElement.style;
+    s.setProperty('--accent',      `rgb(${r},${g},${b})`);
+    s.setProperty('--accent-glow', `rgba(${r},${g},${b},0.48)`);
+    s.setProperty('--accent-soft', `rgba(${r},${g},${b},0.12)`);
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+  colorIdx = (colorIdx + 1) % palette.length;
+}
+setInterval(cycleColor, SWING_MS);
+setTimeout(cycleColor, SWING_MS / 2);
+
+/* ─────────────────────────────
+   LAMP EXPRESSIONS
+───────────────────────────── */
+const mouth = document.getElementById('lampMouth');
+const bubble = document.getElementById('lampBubble');
+const face = document.getElementById('lampFace');
+const hintText = document.getElementById('hintText');
+
+const expressions = {
+  normal: { mouth: 'M76 110 Q80 113 84 110', bubble: '', brows: [0, 0] },
+  happy:  { mouth: 'M74 109 Q80 115 86 109', bubble: '', brows: [0, 0] },
+  wink:   { mouth: 'M76 110 Q80 112 84 110', bubble: '', winkLeft: true, brows: [0, 0] },
+  surprised: { mouth: 'M77 109 Q80 108 83 109', bubble: '', brows: [2, -2] },
+  cool:   { mouth: 'M75 111 L85 111', bubble: '', brows: [0, 0], shades: true },
+};
+
+function setExpression(name) {
+  const ex = expressions[name];
+  if (!ex) return;
+  // mouth
+  mouth.setAttribute('d', ex.mouth);
+  // reset wink
+  const leftEye = face.querySelector('circle:first-child');
+  leftEye.setAttribute('r', ex.winkLeft ? '0.5' : '1.8');
+  leftEye.setAttribute('opacity', ex.winkLeft ? '0.3' : '0.7');
+  // brows
+  const brows = face.querySelectorAll('line');
+  if (ex.brows) {
+    brows[0].setAttribute('y1', 100 + ex.brows[0]);
+    brows[0].setAttribute('y2', 101 + ex.brows[0]);
+    brows[1].setAttribute('y1', 100 + ex.brows[1]);
+    brows[1].setAttribute('y2', 101 + ex.brows[1]);
+  }
+  // bubble
+  if (ex.bubble) {
+    bubble.textContent = ex.bubble;
+    bubble.classList.add('show');
+  } else {
+    bubble.classList.remove('show');
+  }
+}
+
+function showBubble(text, duration) {
+  bubble.textContent = text;
+  bubble.classList.add('show');
+  setTimeout(() => bubble.classList.remove('show'), duration || 2500);
+}
+
+/* idle eye blink */
+setInterval(() => {
+  if (Math.random() > 0.6) {
+    face.querySelector('circle:first-child').setAttribute('r', '0.3');
+    face.querySelector('circle:last-of-type').setAttribute('r', '0.3');
+    setTimeout(() => {
+      face.querySelector('circle:first-child').setAttribute('r', '1.8');
+      face.querySelector('circle:last-of-type').setAttribute('r', '1.8');
+    }, 150);
+  }
+}, 3500);
+
+/* ─────────────────────────────
+   VIEW MANAGEMENT
+───────────────────────────── */
+const views = {
+  intro: document.getElementById('viewIntro'),
+  work:  document.getElementById('viewWork'),
+  cat:   document.getElementById('viewCat'),
+  wf:    document.getElementById('viewWf'),
+};
+let currentView = 'intro';
+let pullCount = 0; // sequential pulls
+
+function switchView(from, to, dir) {
+  const fromEl = views[from];
+  const toEl = views[to];
+  // reset toEl fully before entering
+  toEl.classList.remove('active','exit-up');
+  toEl.style.transform = '';
+  toEl.style.opacity = '';
+  // re-trigger intro fadeUp animations when coming back
+  if (to === 'intro') {
+    toEl.querySelectorAll('.label-top,.title,.name-row,.role-line,.pull-hint').forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+    });
+  }
+  // exit
+  fromEl.classList.remove('active');
+  fromEl.style.transform = dir === 'up' ? 'translateY(-16px)' : 'translateY(16px)';
+  fromEl.style.opacity = '0';
+  // enter
+  setTimeout(() => {
+    fromEl.classList.remove('exit-up');
+    fromEl.style.transform = '';
+    fromEl.style.opacity = '';
+    toEl.style.transform = dir === 'up' ? 'translateY(16px)' : 'translateY(-16px)';
+    toEl.style.opacity = '0';
+    // force reflow
+    void toEl.offsetWidth;
+    toEl.classList.add('active');
+    toEl.style.transform = '';
+    toEl.style.opacity = '';
+  }, 200);
+  currentView = to;
+}
+
+/* ─────────────────────────────
+   CORD INTERACTION
+───────────────────────────── */
+const cordBtn = document.getElementById('cordBtn');
+
+const workIntros = [
+  '他从2021年入行，从设计转行到剪辑，一路升级打怪。',
+  '三年，三家公司，一条越来越清晰的路。',
+];
+
+cordBtn.addEventListener('click', () => {
+  pullCount++;
+
+  if (currentView === 'intro') {
+    // First pull → work experience
+    setExpression('wink');
+    showBubble('想知道我是谁吗？', 2000);
+    setTimeout(() => setExpression('happy'), 2200);
+    document.getElementById('workIntro').textContent = workIntros[0];
+    switchView('intro', 'work', 'up');
+    cordBtn.className = 'cord-btn pull1';
+    hintText.textContent = '再拉一下';
+  }
+  else if (currentView === 'work') {
+    // Second pull → categories
+    setExpression('cool');
+    showBubble('来看看我的作品吧！', 2200);
+    setTimeout(() => setExpression('happy'), 2400);
+    // re-trigger stagger animations
+    views.cat.classList.remove('active');
+    document.querySelectorAll('.cat-btn').forEach(b => b.style.opacity = '0');
+    switchView('work', 'cat', 'up');
+    cordBtn.className = 'cord-btn pull2';
+    hintText.textContent = '再来一次回到开头';
+  }
+  else if (currentView === 'cat') {
+    // Third pull → back to intro
+    setExpression('surprised');
+    showBubble('转了一圈又回来啦~', 2000);
+    setTimeout(() => setExpression('normal'), 2200);
+    switchView('cat', 'intro', 'down');
+    cordBtn.className = 'cord-btn';
+    hintText.textContent = '';
+    pullCount = 0;
+  }
+  else if (currentView === 'wf') {
+    // If in waterfall, go back to cat first
+    backToCat();
+  }
+});
+
+/* ─────────────────────────────
+   CATEGORY → WATERFALL
+   (reads videos from videos/{key}/ folder)
+───────────────────────────── */
+
+/* folder name → display config */
+const catConfig = {
+  xl:     { folder: 'xl',     name: '信息流',   tag: 'FEED ADS',  color: 'color-xl'     },
+  news:   { folder: 'news',   name: '新闻类',   tag: 'NEWS',      color: 'color-news'   },
+  health: { folder: 'health', name: '大健康类', tag: 'HEALTH',    color: 'color-health' },
+  beauty: { folder: 'beauty', name: '美妆类',   tag: 'BEAUTY',    color: 'color-beauty' },
+  misc:   { folder: 'misc',   name: '综合类',   tag: 'MIXED',     color: 'color-misc'   },
+};
+
+const playIcon = `<svg viewBox="0 0 24 24" width="28" height="28" fill="none"
+  stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" style="opacity:0.5">
+  <circle cx="12" cy="12" r="10"/>
+  <polygon points="10 8 16 12 10 16 10 8" fill="var(--accent)" stroke="none" style="opacity:0.22"/>
+</svg>`;
+
+/* video modal */
+const videoModal = document.getElementById('videoModal');
+const modalVideo = document.getElementById('modalVideo');
+
+function openVideoModal(src) {
+  modalVideo.src = src;
+  videoModal.classList.add('open');
+  modalVideo.play();
+}
+function closeVideoModal() {
+  modalVideo.pause();
+  modalVideo.src = '';
+  videoModal.classList.remove('open');
+}
+videoModal.addEventListener('click', (e) => {
+  if (e.target === videoModal) closeVideoModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && videoModal.classList.contains('open')) closeVideoModal();
+});
+
+function openCat(el, name, key) {
+  const cfg = catConfig[key];
+  if (!cfg) return;
+  setExpression('wink');
+  showBubble('选得不错！', 1800);
+  setTimeout(() => setExpression('happy'), 2000);
+
+  const cards = document.getElementById('wfCards');
+  cards.innerHTML = '';
+
+  const folder = 'videos/' + cfg.folder + '/';
+
+  /*
+   * ============================================================
+   *  HOW TO ADD VIDEOS:
+   *  1. Create folder:  videos/{folder}/   (e.g. videos/xl/)
+   *  2. Put your .mp4 files inside
+   *  3. The page auto-discovers and displays them
+   *  4. To set custom title: add a title.txt next to the video
+   *     filename = "my-video.mp4"  →  title.txt line: "my-video.mp4|My Custom Title"
+   *  ============================================================
+   */
+
+  // Try to fetch file list from the folder (works on GitHub Pages / any static server)
+  fetch(folder)
+    .then(r => r.text())
+    .then(html => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const links = Array.from(doc.querySelectorAll('a'))
+        .map(a => decodeURIComponent(a.getAttribute('href')))
+        .filter(h => h.match(/\.(mp4|webm|mov)$/i) && !h.startsWith('/') && !h.startsWith('http'));
+
+      if (links.length === 0) {
+        cards.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-3);font-size:0.7rem;letter-spacing:0.1em;">暂无视频<br><span style="font-size:0.55rem;margin-top:0.5rem;display:inline-block;">将 mp4 文件放入 <code style="color:var(--accent)">' + folder + '</code> 文件夹即可</span></div>';
+        return;
+      }
+
+      links.forEach((file, i) => {
+        const c = document.createElement('div');
+        c.className = 'wf-card';
+        c.style.cursor = 'pointer';
+        c.addEventListener('click', () => openVideoModal(folder + file));
+        const title = file.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+        const aspect = '9/16';
+        c.innerHTML = `
+          <div class="wf-thumb ${cfg.color}" style="aspect-ratio:${aspect}">
+            <video src="${folder}${file}" muted preload="metadata"></video>
+            <div class="play-overlay">${playIcon}</div>
+          </div>
+          <div class="wf-card-info">
+            <div class="wf-card-title">${title}</div>
+            <div class="wf-card-meta">${cfg.name}</div>
+          </div>`;
+        cards.appendChild(c);
+      });
+    })
+    .catch(() => {
+      cards.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-3);font-size:0.7rem;letter-spacing:0.1em;">暂无视频<br><span style="font-size:0.55rem;margin-top:0.5rem;display:inline-block;">将 mp4 文件放入 <code style="color:var(--accent)">' + folder + '</code> 文件夹即可</span></div>';
+    });
+
+  document.getElementById('wfLabel').textContent = cfg.name + ' · ' + cfg.tag;
+  switchView('cat', 'wf', 'up');
+}
+
+function backToIntro() {
+  setExpression('normal');
+  switchView('work', 'intro', 'down');
+  cordBtn.className = 'cord-btn';
+  hintText.textContent = '';
+}
+
+function backToCat() {
+  setExpression('normal');
+  switchView('wf', 'cat', 'down');
+}
+
+/* ─────────────────────────────
+   INIT
+───────────────────────────── */
+setExpression('normal');
+</script>
+</body>
+</html>
