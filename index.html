@@ -1207,43 +1207,38 @@ function openCat(el, name, key) {
   cards.innerHTML = '';
 
   const folder = 'videos/' + cfg.folder + '/';
+  const indexUrl = folder + 'index.json';
 
   /*
    * ============================================================
    *  HOW TO ADD VIDEOS:
-   *  1. Create folder:  videos/{folder}/   (e.g. videos/xl/)
-   *  2. Put your .mp4 files inside
-   *  3. The page auto-discovers and displays them
-   *  4. To set custom title: add a title.txt next to the video
-   *     filename = "my-video.mp4"  →  title.txt line: "my-video.mp4|My Custom Title"
-   *  ============================================================
+   *  1. Put your .mp4 file into  videos/{folder}/
+   *  2. Open  videos/{folder}/index.json
+   *  3. Add the filename to the array, e.g.:
+   *     ["video1.mp4", "video2.mp4", "your-new-video.mp4"]
+   *  4. Push to GitHub — done!
+   * ============================================================
    */
 
-  // Try to fetch file list from the folder (works on GitHub Pages / any static server)
-  fetch(folder)
-    .then(r => r.text())
-    .then(html => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const links = Array.from(doc.querySelectorAll('a'))
-        .map(a => decodeURIComponent(a.getAttribute('href')))
-        .filter(h => h.match(/\.(mp4|webm|mov)$/i) && !h.startsWith('/') && !h.startsWith('http'));
-
-      if (links.length === 0) {
-        cards.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-3);font-size:0.7rem;letter-spacing:0.1em;">暂无视频<br><span style="font-size:0.55rem;margin-top:0.5rem;display:inline-block;">将 mp4 文件放入 <code style="color:var(--accent)">' + folder + '</code> 文件夹即可</span></div>';
+  fetch(indexUrl)
+    .then(r => r.json())
+    .then(files => {
+      if (!files || files.length === 0) {
+        cards.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-3);font-size:0.7rem;letter-spacing:0.1em;">暂无视频<br><span style="font-size:0.55rem;margin-top:0.5rem;display:inline-block;">将 mp4 放入 <code style="color:var(--accent)">' + folder + '</code> 并更新 index.json</span></div>';
         return;
       }
 
-      links.forEach((file, i) => {
+      files.forEach((file, i) => {
         const c = document.createElement('div');
         c.className = 'wf-card';
         c.style.cursor = 'pointer';
-        c.addEventListener('click', () => openVideoModal(folder + file));
+        const safeFile = encodeURIComponent(file);
+        c.addEventListener('click', () => openVideoModal(folder + safeFile));
         const title = file.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
         const aspect = '9/16';
         c.innerHTML = `
           <div class="wf-thumb ${cfg.color}" style="aspect-ratio:${aspect}">
-            <video src="${folder}${file}" muted preload="metadata"></video>
+            <video src="${folder}${safeFile}" muted preload="metadata"></video>
             <div class="play-overlay">${playIcon}</div>
           </div>
           <div class="wf-card-info">
@@ -1254,7 +1249,7 @@ function openCat(el, name, key) {
       });
     })
     .catch(() => {
-      cards.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-3);font-size:0.7rem;letter-spacing:0.1em;">暂无视频<br><span style="font-size:0.55rem;margin-top:0.5rem;display:inline-block;">将 mp4 文件放入 <code style="color:var(--accent)">' + folder + '</code> 文件夹即可</span></div>';
+      cards.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-3);font-size:0.7rem;letter-spacing:0.1em;">暂无视频<br><span style="font-size:0.55rem;margin-top:0.5rem;display:inline-block;">将 mp4 放入 <code style="color:var(--accent)">' + folder + '</code> 并更新 index.json</span></div>';
     });
 
   document.getElementById('wfLabel').textContent = cfg.name + ' · ' + cfg.tag;
