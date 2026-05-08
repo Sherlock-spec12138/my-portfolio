@@ -323,12 +323,12 @@
       content: ''; width: 22px; height: 1px; background: var(--accent);
     }
     .work-intro {
-      font-size: 0.65rem;
-      letter-spacing: 0.08em;
-      color: var(--text-3);
-      line-height: 1.6;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      color: var(--text-2);
+      line-height: 1.7;
       margin-bottom: 1.2rem;
-      font-family: 'Helvetica Neue', sans-serif;
+      font-family: 'PingFang SC', serif;
     }
     .work-grid {
       display: flex;
@@ -340,54 +340,71 @@
     .work-item {
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
-      padding: 0.65rem;
+      gap: 0.35rem;
+      padding: 1rem 1.1rem;
       border: 1px solid var(--divider);
       background: var(--surface);
-      border-radius: 4px;
+      border-radius: 6px;
+      transition: border-color 0.2s;
+    }
+    .work-item:hover {
+      border-color: rgba(255,255,255,0.15);
+    }
+    .work-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.8rem;
     }
     .work-company-name {
-      font-size: 0.65rem;
-      letter-spacing: 0.03em;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
       color: var(--text-1);
-      font-weight: 600;
+      font-weight: 700;
       line-height: 1.35;
     }
     .work-company-meta {
-      font-size: 0.5rem;
-      letter-spacing: 0.08em;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
       color: var(--text-3);
       font-family: 'Helvetica Neue', sans-serif;
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding-top: 0.1rem;
     }
     .work-sub-title {
-      font-size: 0.5rem;
-      letter-spacing: 0.1em;
-      color: var(--text-2);
-      margin-top: 0.15rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-top: 0.1rem;
+      font-weight: 600;
+      font-family: 'Helvetica Neue', sans-serif;
+      text-transform: uppercase;
     }
     .work-list {
       list-style: none;
       padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.1rem;
-      margin-top: 0.1rem;
+      gap: 0.2rem;
+      margin-top: 0.05rem;
     }
     .work-list li {
-      font-size: 0.52rem;
+      font-size: 0.7rem;
       letter-spacing: 0.02em;
       color: var(--text-2);
-      line-height: 1.5;
-      padding-left: 0.6rem;
+      line-height: 1.6;
+      padding-left: 0.75rem;
       position: relative;
     }
     .work-list li::before {
       content: '';
       position: absolute;
-      left: 0; top: 0.5em;
-      width: 2.5px; height: 2.5px;
+      left: 0; top: 0.55em;
+      width: 3px; height: 3px;
       border-radius: 50%;
-      background: var(--text-3);
+      background: var(--accent);
+      opacity: 0.5;
     }
     /* back button */
     .view-back {
@@ -835,8 +852,11 @@
       <div class="work-intro" id="workIntro" style="position:relative; z-index:1;"></div>
       <div class="work-grid">
         <div class="work-item">
-          <div class="work-company-name">四川全时天地网络先锋技术有限公司</div>
-          <div class="work-company-meta">2024.04 — 至今 · 腾讯广告 · 剪辑</div>
+          <div class="work-item-header">
+            <div class="work-company-name">四川全时天地网络先锋技术有限公司</div>
+            <div class="work-company-meta">2024.04 — 至今</div>
+          </div>
+          <div class="work-company-meta">腾讯广告 · 剪辑</div>
           <div class="work-sub-title">核心职责</div>
           <ul class="work-list">
             <li>代运营客户各项目信息流视频剪辑</li>
@@ -853,8 +873,11 @@
           </ul>
         </div>
         <div class="work-item">
-          <div class="work-company-name">上海亦芯文化传媒有限公司</div>
-          <div class="work-company-meta">2023.08 — 2024.01 · 剪辑岗位</div>
+          <div class="work-item-header">
+            <div class="work-company-name">上海亦芯文化传媒有限公司</div>
+            <div class="work-company-meta">2023.08 — 2024.01</div>
+          </div>
+          <div class="work-company-meta">剪辑岗位</div>
           <div class="work-sub-title">核心职责</div>
           <ul class="work-list">
             <li>腾讯/千川等平台代运营信息流视频剪辑</li>
@@ -869,8 +892,11 @@
           </ul>
         </div>
         <div class="work-item">
-          <div class="work-company-name">成都普济中医药研究院</div>
-          <div class="work-company-meta">2021.04 — 2023.08 · 设计</div>
+          <div class="work-item-header">
+            <div class="work-company-name">成都普济中医药研究院</div>
+            <div class="work-company-meta">2021.04 — 2023.08</div>
+          </div>
+          <div class="work-company-meta">设计</div>
           <div class="work-sub-title">核心职责</div>
           <ul class="work-list">
             <li>医院百度竞价广告物料输出</li>
